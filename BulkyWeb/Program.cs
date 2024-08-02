@@ -37,7 +37,10 @@ app.MapControllerRoute(
 using (IServiceScope scope = app.Services.CreateScope())
 {
     ApplicationDbContext db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate();
+    if (db.Database.GetPendingMigrations().Count() > 0)
+    {
+        db.Database.Migrate();
+    }
 }
 
 
